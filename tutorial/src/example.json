@@ -1,0 +1,274 @@
+{
+  "features": [
+    {
+      "id": "base",
+      "type": "base_plate",
+      "parent": null,
+      "params": {
+        "length": 80.0,
+        "width": 50.0,
+        "thickness": 5.0
+      }
+    },
+    {
+      "id": "fillet",
+      "type": "fillet",
+      "parent": "base",
+      "params": {
+        "radius": 6.0,
+        "corners": "free"
+      }
+    },
+    {
+      "id": "flange",
+      "type": "flange",
+      "parent": "base",
+      "params": {
+        "height": 40.5,
+        "thickness": 5.0,
+        "edge": "+y"
+      }
+    },
+    {
+      "id": "h1",
+      "type": "hole",
+      "parent": "base",
+      "params": {
+        "x": -20.0,
+        "y": -8.0,
+        "diameter": 6.5
+      }
+    },
+    {
+      "id": "h2",
+      "type": "hole",
+      "parent": "base",
+      "params": {
+        "x": 20.0,
+        "y": -8.0,
+        "diameter": 6.5
+      }
+    },
+    {
+      "id": "slot1",
+      "type": "slot",
+      "parent": "base",
+      "params": {
+        "x": 0.0,
+        "y": 8.0,
+        "length": 14.0,
+        "width": 5.0,
+        "angle": 0.0
+      }
+    },
+    {
+      "id": "fh1",
+      "type": "hole",
+      "parent": "flange",
+      "params": {
+        "u": -22.0,
+        "v": 26.0,
+        "diameter": 5.0
+      }
+    },
+    {
+      "id": "fh2",
+      "type": "hole",
+      "parent": "flange",
+      "params": {
+        "u": 22.0,
+        "v": 26.0,
+        "diameter": 5.0
+      }
+    }
+  ],
+  "params": {
+    "base.length": 80.0,
+    "base.width": 50.0,
+    "base.thickness": 5.0,
+    "fillet.radius": 6.0,
+    "flange.height": 40.5,
+    "flange.thickness": 5.0,
+    "h1.x": -20.0,
+    "h1.y": -8.0,
+    "h1.diameter": 6.5,
+    "h2.x": 20.0,
+    "h2.y": -8.0,
+    "h2.diameter": 6.5,
+    "slot1.x": 0.0,
+    "slot1.y": 8.0,
+    "slot1.length": 14.0,
+    "slot1.width": 5.0,
+    "slot1.angle": 0.0,
+    "fh1.u": -22.0,
+    "fh1.v": 26.0,
+    "fh1.diameter": 5.0,
+    "fh2.u": 22.0,
+    "fh2.v": 26.0,
+    "fh2.diameter": 5.0
+  },
+  "summary": {
+    "describer": "classical",
+    "reference": "hole spacing 40mm",
+    "dimensions_scored": 14,
+    "mean_abs_error_mm": 0.091,
+    "max_abs_error_mm": 0.474,
+    "mean_abs_error_pct": 0.67,
+    "max_abs_error_pct": 2.23,
+    "snapped_exact": 12,
+    "snapped_mean_abs_error_mm": 0.05
+  },
+  "scales": {
+    "top": {
+      "mm_per_px": 0.08944644124500646,
+      "source": "reference: hole spacing 40mm"
+    },
+    "side": {
+      "mm_per_px": 0.09034269817130912,
+      "source": "chained through the plate width seen in the top view"
+    },
+    "front": {
+      "mm_per_px": 0.09994327704654281,
+      "source": "chained through the plate length seen in the top view"
+    }
+  },
+  "dfm": {
+    "ok": true,
+    "min_wall_mm": 1.2,
+    "max_overhang_deg": 45.0,
+    "walls": [
+      {
+        "name": "base thickness",
+        "thickness": 5.0,
+        "ok": true
+      },
+      {
+        "name": "flange thickness",
+        "thickness": 5.0,
+        "ok": true
+      },
+      {
+        "name": "h1 to plate edge",
+        "thickness": 13.75,
+        "ok": true
+      },
+      {
+        "name": "h2 to plate edge",
+        "thickness": 13.75,
+        "ok": true
+      },
+      {
+        "name": "fh1 to flange edge",
+        "thickness": 12.0,
+        "ok": true
+      },
+      {
+        "name": "fh2 to flange edge",
+        "thickness": 12.0,
+        "ok": true
+      },
+      {
+        "name": "slot1 to plate edge",
+        "thickness": 14.5,
+        "ok": true
+      },
+      {
+        "name": "web h1 to h2",
+        "thickness": 33.5,
+        "ok": true
+      },
+      {
+        "name": "web h1 to slot1",
+        "thickness": 15.362,
+        "ok": true
+      },
+      {
+        "name": "web h2 to slot1",
+        "thickness": 15.362,
+        "ok": true
+      },
+      {
+        "name": "web fh1 to fh2",
+        "thickness": 39.0,
+        "ok": true
+      }
+    ],
+    "overhangs": [
+      {
+        "orientation": "+z up (as modelled)",
+        "area_mm2": 39.88910678091629,
+        "fraction": 0.0025788765439985484,
+        "bed_contact_mm2": 3853.5605002676057
+      },
+      {
+        "orientation": "-z up (flipped)",
+        "area_mm2": 3493.449607048523,
+        "fraction": 0.2258555273934723,
+        "bed_contact_mm2": 400.0
+      },
+      {
+        "orientation": "+y up",
+        "area_mm2": 2963.045421048869,
+        "fraction": 0.19156428789227706,
+        "bed_contact_mm2": 340.0
+      },
+      {
+        "orientation": "-y up",
+        "area_mm2": 115.17989724267534,
+        "fraction": 0.007446512577248422,
+        "bed_contact_mm2": 3200.7463650422014
+      },
+      {
+        "orientation": "+x up",
+        "area_mm2": 133.3792764882063,
+        "fraction": 0.008623123337409336,
+        "bed_contact_mm2": 397.5
+      },
+      {
+        "orientation": "-x up",
+        "area_mm2": 133.37927648820715,
+        "fraction": 0.008623123337409392,
+        "bed_contact_mm2": 397.5
+      }
+    ],
+    "best_orientation": "+z up (as modelled)",
+    "warnings": []
+  },
+  "refLine": [
+    [
+      0.3841,
+      0.5516
+    ],
+    [
+      0.6078,
+      0.5385
+    ]
+  ],
+  "modelSource": [
+    "def build(P):",
+    "    \"\"\"Build the part from a flat parameter dict (millimetres).\"\"\"",
+    "    L, W, T = P[\"base.length\"], P[\"base.width\"], P[\"base.thickness\"]",
+    "",
+    "    # base: base plate, centred on the origin, sitting on Z = 0",
+    "    part = cq.Workplane(\"XY\").box(L, W, T, centered=(True, True, False))",
+    "",
+    "    # fillet: rounded plate corners (free)",
+    "    r = P[\"fillet.radius\"]",
+    "    for sx, sy in [(-1, -1), (1, -1)]:",
+    "        cx, cy = sx * L / 2, sy * W / 2",
+    "        corner = cq.selectors.BoxSelector((cx - 0.1, cy - 0.1, -0.1), (cx + 0.1, cy + 0.1, T + 0.1))",
+    "        part = part.edges(corner).fillet(r)",
+    "",
+    "    # flange: flange standing on the +y edge (height from Z = 0)",
+    "    fh, ft = P[\"flange.height\"], P[\"flange.thickness\"]",
+    "    part = part.union(cq.Workplane(\"XY\").box(L, ft, fh, centered=(True, True, False)).translate((0, (W / 2 - ft / 2), 0)))",
+    "",
+    "    # h1: through hole in the base",
+    "    part = part.cut(cq.Solid.makeCylinder(P[\"h1.diameter\"] / 2, T + 2, cq.Vector(P[\"h1.x\"], P[\"h1.y\"], -1), cq.Vector(0, 0, 1)))",
+    "",
+    "    # h2: through hole in the base"
+  ],
+  "turnFrames": 120,
+  "editFrames": 31,
+  "editTo": 60.0
+}
