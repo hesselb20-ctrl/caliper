@@ -1,0 +1,20 @@
+{
+  "color": {
+    "bg": "#0E1217",
+    "panel": "#161C24",
+    "panelRaised": "#1D2530",
+    "line": "#2B3542",
+    "text": "#EEF2F6",
+    "muted": "#93A1B3",
+    "accent": "#FF7A1A",
+    "accentSoft": "#FFB27A",
+    "measure": "#5CC8FF",
+    "ok": "#6FD08C",
+    "part": "#E8782E"
+  },
+  "type": {
+    "sans": "Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif",
+    "mono": "'JetBrains Mono', 'Cascadia Mono', Consolas, ui-monospace, Menlo, monospace",
+    "scale": { "caption": 12, "body": 14, "label": 18, "title": 28, "display": 44 }
+  }
+}
