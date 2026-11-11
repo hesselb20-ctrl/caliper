@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+build/
+dist/
+
+# Remotion
+tutorial/node_modules/
+tutorial/out/
+
+# scan output you make yourself
+/part/
