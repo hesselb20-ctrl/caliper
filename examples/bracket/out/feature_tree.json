@@ -1,0 +1,92 @@
+{
+  "part_type": "bracket",
+  "units": "mm",
+  "notes": "",
+  "features": [
+    {
+      "id": "base",
+      "type": "base_plate",
+      "parent": null,
+      "params": {
+        "length": 80.0,
+        "width": 50.0,
+        "thickness": 5.0
+      }
+    },
+    {
+      "id": "fillet",
+      "type": "fillet",
+      "parent": "base",
+      "params": {
+        "radius": 6.0,
+        "corners": "free"
+      }
+    },
+    {
+      "id": "flange",
+      "type": "flange",
+      "parent": "base",
+      "params": {
+        "height": 40.5,
+        "thickness": 5.0,
+        "edge": "+y"
+      }
+    },
+    {
+      "id": "h1",
+      "type": "hole",
+      "parent": "base",
+      "params": {
+        "x": -20.0,
+        "y": -8.0,
+        "diameter": 6.5
+      }
+    },
+    {
+      "id": "h2",
+      "type": "hole",
+      "parent": "base",
+      "params": {
+        "x": 20.0,
+        "y": -8.0,
+        "diameter": 6.5
+      }
+    },
+    {
+      "id": "slot1",
+      "type": "slot",
+      "parent": "base",
+      "params": {
+        "x": 0.0,
+        "y": 8.0,
+        "length": 14.0,
+        "width": 5.0,
+        "angle": 0.0
+      }
+    },
+    {
+      "id": "fh1",
+      "type": "hole",
+      "parent": "flange",
+      "params": {
+        "u": -22.0,
+        "v": 26.0,
+        "diameter": 5.0
+      }
+    },
+    {
+      "id": "fh2",
+      "type": "hole",
+      "parent": "flange",
+      "params": {
+        "u": 22.0,
+        "v": 26.0,
+        "diameter": 5.0
+      }
+    }
+  ],
+  "meta": {
+    "describer": "classical",
+    "snapped_to_mm": 0.5
+  }
+}

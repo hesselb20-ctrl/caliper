@@ -1,0 +1,22 @@
+{
+  "reference": {
+    "raw": "hole spacing 40mm",
+    "kind": "hole_spacing",
+    "value_mm": 40.0
+  },
+  "scales": {
+    "top": {
+      "mm_per_px": 0.08944644124500646,
+      "source": "reference: hole spacing 40mm"
+    },
+    "side": {
+      "mm_per_px": 0.09034269817130912,
+      "source": "chained through the plate width seen in the top view"
+    },
+    "front": {
+      "mm_per_px": 0.09994327704654281,
+      "source": "chained through the plate length seen in the top view"
+    }
+  },
+  "describer": "classical"
+}

@@ -1,0 +1,102 @@
+{
+  "ok": true,
+  "min_wall_mm": 1.2,
+  "max_overhang_deg": 45.0,
+  "walls": [
+    {
+      "name": "base thickness",
+      "thickness": 5.0,
+      "ok": true
+    },
+    {
+      "name": "flange thickness",
+      "thickness": 5.0,
+      "ok": true
+    },
+    {
+      "name": "h1 to plate edge",
+      "thickness": 13.75,
+      "ok": true
+    },
+    {
+      "name": "h2 to plate edge",
+      "thickness": 13.75,
+      "ok": true
+    },
+    {
+      "name": "fh1 to flange edge",
+      "thickness": 12.0,
+      "ok": true
+    },
+    {
+      "name": "fh2 to flange edge",
+      "thickness": 12.0,
+      "ok": true
+    },
+    {
+      "name": "slot1 to plate edge",
+      "thickness": 14.5,
+      "ok": true
+    },
+    {
+      "name": "web h1 to h2",
+      "thickness": 33.5,
+      "ok": true
+    },
+    {
+      "name": "web h1 to slot1",
+      "thickness": 15.362,
+      "ok": true
+    },
+    {
+      "name": "web h2 to slot1",
+      "thickness": 15.362,
+      "ok": true
+    },
+    {
+      "name": "web fh1 to fh2",
+      "thickness": 39.0,
+      "ok": true
+    }
+  ],
+  "overhangs": [
+    {
+      "orientation": "+z up (as modelled)",
+      "area_mm2": 39.88910678091629,
+      "fraction": 0.0025788765439985484,
+      "bed_contact_mm2": 3853.5605002676057
+    },
+    {
+      "orientation": "-z up (flipped)",
+      "area_mm2": 3493.449607048523,
+      "fraction": 0.2258555273934723,
+      "bed_contact_mm2": 400.0
+    },
+    {
+      "orientation": "+y up",
+      "area_mm2": 2963.045421048869,
+      "fraction": 0.19156428789227706,
+      "bed_contact_mm2": 340.0
+    },
+    {
+      "orientation": "-y up",
+      "area_mm2": 115.17989724267534,
+      "fraction": 0.007446512577248422,
+      "bed_contact_mm2": 3200.7463650422014
+    },
+    {
+      "orientation": "+x up",
+      "area_mm2": 133.3792764882063,
+      "fraction": 0.008623123337409336,
+      "bed_contact_mm2": 397.5
+    },
+    {
+      "orientation": "-x up",
+      "area_mm2": 133.37927648820715,
+      "fraction": 0.008623123337409392,
+      "bed_contact_mm2": 397.5
+    }
+  ],
+  "best_orientation": "+z up (as modelled)",
+  "warnings": []
+}

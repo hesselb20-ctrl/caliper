@@ -1,0 +1,180 @@
+{
+  "summary": {
+    "describer": "classical",
+    "reference": "hole spacing 40mm",
+    "dimensions_scored": 14,
+    "mean_abs_error_mm": 0.091,
+    "max_abs_error_mm": 0.474,
+    "mean_abs_error_pct": 0.67,
+    "max_abs_error_pct": 2.23,
+    "snapped_exact": 12,
+    "snapped_mean_abs_error_mm": 0.05
+  },
+  "rows": [
+    {
+      "key": "length",
+      "label": "Plate length",
+      "truth_mm": 80.0,
+      "measured_mm": 80.055,
+      "error_mm": 0.055,
+      "error_pct": 0.07,
+      "snapped_mm": 80.0,
+      "snapped_error_mm": 0.0,
+      "is_reference": false
+    },
+    {
+      "key": "width",
+      "label": "Plate width",
+      "truth_mm": 50.0,
+      "measured_mm": 50.14,
+      "error_mm": 0.14,
+      "error_pct": 0.28,
+      "snapped_mm": 50.0,
+      "snapped_error_mm": 0.0,
+      "is_reference": false
+    },
+    {
+      "key": "thickness",
+      "label": "Plate thickness",
+      "truth_mm": 5.0,
+      "measured_mm": 5.059,
+      "error_mm": 0.059,
+      "error_pct": 1.18,
+      "snapped_mm": 5.0,
+      "snapped_error_mm": 0.0,
+      "is_reference": false
+    },
+    {
+      "key": "corner_radius",
+      "label": "Corner radius",
+      "truth_mm": 6.0,
+      "measured_mm": 6.134,
+      "error_mm": 0.134,
+      "error_pct": 2.23,
+      "snapped_mm": 6.0,
+      "snapped_error_mm": 0.0,
+      "is_reference": false
+    },
+    {
+      "key": "hole_diameter",
+      "label": "Base hole diameter",
+      "truth_mm": 6.5,
+      "measured_mm": 6.482,
+      "error_mm": -0.018,
+      "error_pct": -0.27,
+      "snapped_mm": 6.5,
+      "snapped_error_mm": 0.0,
+      "is_reference": false
+    },
+    {
+      "key": "hole_spacing",
+      "label": "Base hole spacing (reference)",
+      "truth_mm": 40.0,
+      "measured_mm": 40.0,
+      "error_mm": 0.0,
+      "error_pct": 0.0,
+      "snapped_mm": 40.0,
+      "snapped_error_mm": 0.0,
+      "is_reference": true
+    },
+    {
+      "key": "hole_y",
+      "label": "Base hole offset",
+      "truth_mm": -8.0,
+      "measured_mm": -7.955,
+      "error_mm": 0.045,
+      "error_pct": 0.56,
+      "snapped_mm": -8.0,
+      "snapped_error_mm": 0.0,
+      "is_reference": false
+    },
+    {
+      "key": "slot_length",
+      "label": "Slot length",
+      "truth_mm": 14.0,
+      "measured_mm": 13.954,
+      "error_mm": -0.046,
+      "error_pct": -0.33,
+      "snapped_mm": 14.0,
+      "snapped_error_mm": 0.0,
+      "is_reference": false
+    },
+    {
+      "key": "slot_width",
+      "label": "Slot width",
+      "truth_mm": 5.0,
+      "measured_mm": 5.009,
+      "error_mm": 0.009,
+      "error_pct": 0.18,
+      "snapped_mm": 5.0,
+      "snapped_error_mm": 0.0,
+      "is_reference": false
+    },
+    {
+      "key": "slot_y",
+      "label": "Slot offset",
+      "truth_mm": 8.0,
+      "measured_mm": 8.063,
+      "error_mm": 0.063,
+      "error_pct": 0.79,
+      "snapped_mm": 8.0,
+      "snapped_error_mm": 0.0,
+      "is_reference": false
+    },
+    {
+      "key": "flange_height",
+      "label": "Flange height",
+      "truth_mm": 40.0,
+      "measured_mm": 40.474,
+      "error_mm": 0.474,
+      "error_pct": 1.18,
+      "snapped_mm": 40.5,
+      "snapped_error_mm": 0.5,
+      "is_reference": false
+    },
+    {
+      "key": "flange_thickness",
+      "label": "Flange thickness",
+      "truth_mm": 5.0,
+      "measured_mm": 5.059,
+      "error_mm": 0.059,
+      "error_pct": 1.18,
+      "snapped_mm": 5.0,
+      "snapped_error_mm": 0.0,
+      "is_reference": false
+    },
+    {
+      "key": "flange_hole_diameter",
+      "label": "Flange hole diameter",
+      "truth_mm": 5.2,
+      "measured_mm": 5.165,
+      "error_mm": -0.035,
+      "error_pct": -0.68,
+      "snapped_mm": 5.0,
+      "snapped_error_mm": -0.2,
+      "is_reference": false
+    },
+    {
+      "key": "flange_hole_spacing",
+      "label": "Flange hole spacing",
+      "truth_mm": 44.0,
+      "measured_mm": 43.955,
+      "error_mm": -0.045,
+      "error_pct": -0.1,
+      "snapped_mm": 44.0,
+      "snapped_error_mm": 0.0,
+      "is_reference": false
+    },
+    {
+      "key": "flange_hole_height",
+      "label": "Flange hole height",
+      "truth_mm": 26.0,
+      "measured_mm": 26.099,
+      "error_mm": 0.099,
+      "error_pct": 0.38,
+      "snapped_mm": 26.0,
+      "snapped_error_mm": 0.0,
+      "is_reference": false
+    }
+  ]
+}
