@@ -71,6 +71,13 @@ drawing, and who can measure one dimension of it by hand.
    Results go to `report.md` and `report.json`, and a render to `preview.png`.
 
 <picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/scene-dark.gif">
+  <img src=".github/assets/scene-light.gif" width="100%" alt="The bracket Caliper rebuilt from the example photos turns once as a grey solid, with its hole spacing of 40 millimetres marked as the reference and its width of 50 and flange height of 40.5 dimensioned.">
+</picture>
+
+<sub>The solid is the committed scan output, [`examples/bracket/out/part.stl`](examples/bracket/out/part.stl), and the dimensions are values from its `params.json`. The photos it was rebuilt from are rendered, not real.</sub>
+
+<picture>
   <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-04-dark.svg">
   <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-04-light.svg">
   <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-04-dark.svg">
