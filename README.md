@@ -1,9 +1,10 @@
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/hero-mobile-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/hero-mobile-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-dark.svg">
-  <img src=".github/assets/hero-light.svg" width="100%" alt="Caliper. Parametric CAD from photos and one measurement. Prototype, tested on one synthetic part only.">
-</picture>
+# Caliper
+
+Parametric CAD from photos and one measurement.
+
+<img src=".github/assets/figure.webp" width="100%" alt="3D view of the recovered bracket. Only the known 40 millimetre hole spacing is marked at first. The other dimensions then appear on the part in one colour per feature. A chart beside it shows the error of each of 14 dimensions: 13 fall within a quarter millimetre, and the one miss is marked.">
+
+<sub>From `examples/bracket/accuracy.json` and the recovered solid in `examples/bracket/out/`. One synthetic part from rendered photos; no real photos have been tested. The quarter-millimetre band is half the tool's snap grid, not a stated target.</sub>
 
 <picture>
   <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-01-dark.svg">
@@ -44,13 +45,6 @@ drawing, and who can measure one dimension of it by hand.
   <img src=".github/assets/rule-03-light.svg" width="100%" alt="03 How it works">
 </picture>
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/flow-mobile-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/flow-mobile-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/flow-dark.svg">
-  <img src=".github/assets/flow-light.svg" width="100%" alt="Data flow. Input: one to four photos named top, side and front, plus one known measurement; OpenCV segments each face and the reference sets millimetres per pixel, chained to the other views. Describe: an offline classical describer builds a feature tree; with an API key, Claude can describe the part instead, using the pixel measurements as evidence; dimensions are snapped to a 0.5 mm grid. Build: the tree becomes CadQuery code with named parameters, the solid is exported as STEP and STL, and a print check reports thin walls and overhangs.">
-</picture>
-
 1. **Photos.** One to four images in a folder. The file name says the view: `top`, `side`, `front`
    (also `plan`, `profile`, `elevation` and similar). Unnamed photos take the remaining views in order.
 2. **Reference.** One known measurement in plain text: hole spacing, hole diameter, length, width,
@@ -69,13 +63,6 @@ drawing, and who can measure one dimension of it by hand.
 7. **Check.** Walls, webs and edge margins are read from the tree and compared with a minimum wall
    (default 1.2 mm). Unsupported overhang area is measured on the mesh for six print orientations.
    Results go to `report.md` and `report.json`, and a render to `preview.png`.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/scene-dark.gif">
-  <img src=".github/assets/scene-light.gif" width="100%" alt="The bracket Caliper rebuilt from the example photos turns once as a grey solid, with its hole spacing of 40 millimetres marked as the reference and its width of 50 and flange height of 40.5 dimensioned.">
-</picture>
-
-<sub>The solid is the committed scan output, [`examples/bracket/out/part.stl`](examples/bracket/out/part.stl), and the dimensions are values from its `params.json`. The photos it was rebuilt from are rendered, not real.</sub>
 
 <picture>
   <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-04-dark.svg">
