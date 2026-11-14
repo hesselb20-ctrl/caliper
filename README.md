@@ -49,6 +49,10 @@ drawing, and who can measure one dimension of it by hand.
    (default 1.2 mm). Unsupported overhang area is measured on the mesh for six print orientations.
    Results go to `report.md` and `report.json`, and a render to `preview.png`.
 
+<img src=".github/assets/figure-how.webp" width="100%" alt="Three tilted photo outlines snap into a scaled drawing as a 40 mm reference fixes 0.0894 mm per pixel; front and side views then measure the flange face at 34.98 and 35.41 mm against a true 35.0.">
+
+<sub>OpenCV contours of three rendered photos of one synthetic part. No real photos.</sub>
+
 ## Capabilities
 
 What the code does today.
@@ -102,6 +106,10 @@ Known limits:
   applied; the EXIF focal length is read but not used.
 - Anything no photo shows is not in the model.
 - The print check is a first pass, not a slicer.
+
+<img src=".github/assets/figure-more.webp" width="100%" alt="An eight-node feature tree builds the bracket; flange height is rebuilt from 40.5 to 60 mm; overhang bars change only for one orientation while the best stays 40 square mm and the thinnest wall 5.0 mm against a 1.2 mm minimum.">
+
+<sub>CadQuery rebuilds of one synthetic part, run for this figure at 45 to 60 mm.</sub>
 
 ## Quick start
 
