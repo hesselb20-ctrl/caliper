@@ -6,12 +6,7 @@ Parametric CAD from photos and one measurement.
 
 <sub>From `examples/bracket/accuracy.json` and the recovered solid in `examples/bracket/out/`. One synthetic part from rendered photos; no real photos have been tested. The quarter-millimetre band is half the tool's snap grid, not a stated target.</sub>
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-01-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-01-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-01-dark.svg">
-  <img src=".github/assets/rule-01-light.svg" width="100%" alt="01 What it is">
-</picture>
+## What it is
 
 Caliper turns 1 to 4 photos of a simple part, such as a bracket or a plate, into a CAD model with real
 dimensions. You give it one measurement you already know, for example "hole spacing 40mm", and it scales
@@ -21,12 +16,7 @@ and rebuild from.
 It is an early prototype. It has been measured on one part, from rendered photos. It has not been
 tested on real photos.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-02-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-02-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-02-dark.svg">
-  <img src=".github/assets/rule-02-light.svg" width="100%" alt="02 Why it exists">
-</picture>
+## Why it exists
 
 **The problem.** A 3D scan gives you a mesh: many triangles that look like the part and know nothing
 about it. You cannot make a hole 0.5 mm bigger, move it, or thicken a wall without fighting the mesh.
@@ -38,12 +28,7 @@ Caliper recovers that list from photos, writes it as readable CadQuery code and 
 **Who it is for.** People who need to redraw, change or reprint a simple prismatic part that has no
 drawing, and who can measure one dimension of it by hand.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-03-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-03-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-03-dark.svg">
-  <img src=".github/assets/rule-03-light.svg" width="100%" alt="03 How it works">
-</picture>
+## How it works
 
 1. **Photos.** One to four images in a folder. The file name says the view: `top`, `side`, `front`
    (also `plan`, `profile`, `elevation` and similar). Unnamed photos take the remaining views in order.
@@ -64,12 +49,7 @@ drawing, and who can measure one dimension of it by hand.
    (default 1.2 mm). Unsupported overhang area is measured on the mesh for six print orientations.
    Results go to `report.md` and `report.json`, and a render to `preview.png`.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-04-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-04-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-04-dark.svg">
-  <img src=".github/assets/rule-04-light.svg" width="100%" alt="04 Capabilities">
-</picture>
+## Capabilities
 
 What the code does today.
 
@@ -123,12 +103,7 @@ Known limits:
 - Anything no photo shows is not in the model.
 - The print check is a first pass, not a slicer.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-05-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-05-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-05-dark.svg">
-  <img src=".github/assets/rule-05-light.svg" width="100%" alt="05 Quick start">
-</picture>
+## Quick start
 
 Requires Python 3.11 or newer; CadQuery must have a wheel for your Python version. The commands below
 were run on Windows 11 with Python 3.11.18, a virtual environment made with
@@ -202,12 +177,7 @@ Other scan options: `--describer auto|claude|classical`, `--snap 0.5`, `--min-wa
 `--max-overhang 45`, `--no-preview`. The Claude describer (`--describer claude`, or `auto` with
 `ANTHROPIC_API_KEY` set) was not run here.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-06-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-06-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-06-dark.svg">
-  <img src=".github/assets/rule-06-light.svg" width="100%" alt="06 Stack, status, roadmap">
-</picture>
+## Stack, status, roadmap
 
 **Stack**
 
@@ -248,11 +218,6 @@ Other scan options: `--describer auto|claude|classical`, `--snap 0.5`, `--min-wa
 | [`tutorial/README.md`](tutorial/README.md) | How the tutorial video is built from the example's output |
 | [`media/tutorial.mp4`](media/tutorial.mp4?raw=true) | 75-second walkthrough video, 4.8 MB download |
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-07-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-07-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-07-dark.svg">
-  <img src=".github/assets/rule-07-light.svg" width="100%" alt="07 License">
-</picture>
+## License
 
 MIT. See [`LICENSE`](LICENSE).
