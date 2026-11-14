@@ -1,61 +1,160 @@
-# caliper
+# Caliper
 
-**Photos and one known measurement in. Parametric CAD out.**
+Parametric CAD from photos and one measurement.
 
-![caliper: a bracket rebuilt from photos, with its dimensions](media/hero.png)
+<img src=".github/assets/figure.webp" width="100%" alt="3D view of the recovered bracket. Only the known 40 millimetre hole spacing is marked at first. The other dimensions then appear on the part in one colour per feature. A chart beside it shows the error of each of 14 dimensions: 13 fall within a quarter millimetre, and the one miss is marked.">
 
-Caliper turns 1 to 4 photos of a simple physical part (a bracket, mount, clip or plate) plus one measurement you already know into a parametric CAD model with real dimensions. You get a STEP file, an STL that is ready to print, and a parameter file you can edit.
+<sub>From `examples/bracket/accuracy.json` and the recovered solid in `examples/bracket/out/`. One synthetic part from rendered photos; no real photos have been tested. The quarter-millimetre band is half the tool's snap grid, not a stated target.</sub>
+
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-01-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-01-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-01-dark.svg">
+  <img src=".github/assets/rule-01-light.svg" width="100%" alt="01 What it is">
+</picture>
+
+Caliper turns 1 to 4 photos of a simple part, such as a bracket or a plate, into a CAD model with real
+dimensions. You give it one measurement you already know, for example "hole spacing 40mm", and it scales
+everything else from that. You get a STEP file, an STL for printing, and a parameter file you can edit
+and rebuild from.
+
+It is an early prototype. It has been measured on one part, from rendered photos. It has not been
+tested on real photos.
+
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-02-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-02-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-02-dark.svg">
+  <img src=".github/assets/rule-02-light.svg" width="100%" alt="02 Why it exists">
+</picture>
+
+**The problem.** A 3D scan gives you a mesh: many triangles that look like the part and know nothing
+about it. You cannot make a hole 0.5 mm bigger, move it, or thicken a wall without fighting the mesh.
+
+**What was missing.** The design intent: a plate of 80 by 50 by 5 mm, two 6.5 mm holes 40 mm apart, a
+flange on one edge. That is a short list of features with numbers on them, which is what a CAD model is.
+Caliper recovers that list from photos, writes it as readable CadQuery code and exports the solid.
+
+**Who it is for.** People who need to redraw, change or reprint a simple prismatic part that has no
+drawing, and who can measure one dimension of it by hand.
+
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-03-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-03-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-03-dark.svg">
+  <img src=".github/assets/rule-03-light.svg" width="100%" alt="03 How it works">
+</picture>
+
+1. **Photos.** One to four images in a folder. The file name says the view: `top`, `side`, `front`
+   (also `plan`, `profile`, `elevation` and similar). Unnamed photos take the remaining views in order.
+2. **Reference.** One known measurement in plain text: hole spacing, hole diameter, length, width,
+   thickness, flange height, or the side of a printed ArUco marker. Units mm, cm, m or inches.
+3. **Measure.** OpenCV separates the part from the background and reads the face square to the camera.
+   The reference sets millimetres per pixel in the view that shows it. That scale is passed to the other
+   views through a dimension they share: plate length for top and front, plate width for top and side.
+4. **Describe.** The classical describer turns the measurements into a feature tree: base plate, corner
+   fillet, one flange, holes and slots. It runs offline. With `ANTHROPIC_API_KEY` set, the default
+   `auto` mode asks Claude (`claude-fable-5-2`, vision with a JSON schema) for the tree instead, and
+   passes the classical measurements along as evidence.
+5. **Snap.** Dimensions within 0.35 of a step of a 0.5 mm grid are rounded to it, and nearly mirrored
+   hole pairs are made exactly symmetric. The raw values stay in `measured.json`.
+6. **Build.** The tree becomes `model.py`, CadQuery code in which every dimension is looked up by name in
+   `params.json`. The solid is exported to `part.step` and `part.stl`.
+7. **Check.** Walls, webs and edge margins are read from the tree and compared with a minimum wall
+   (default 1.2 mm). Unsupported overhang area is measured on the mesh for six print orientations.
+   Results go to `report.md` and `report.json`, and a render to `preview.png`.
+
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-04-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-04-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-04-dark.svg">
+  <img src=".github/assets/rule-04-light.svg" width="100%" alt="04 Capabilities">
+</picture>
+
+What the code does today.
+
+- **CLI.** `caliper scan`, `caliper rebuild` (after editing `params.json`) and `caliper marker`
+  (printable ArUco PNG). `caliper/cli.py`
+- **Photo ingest.** 1 to 4 images, view from the file name, EXIF focal length read. `caliper/ingest.py`
+- **Reference parsing and scale.** Seven reference kinds, unit conversion, pixel scale, scale chaining
+  between views, ArUco marker detection. `caliper/calibration.py`
+- **Classical measurement.** Face segmentation, skew correction, holes, slots, corner radii, L-profile
+  from the side view. `caliper/measure.py`, `caliper/describe.py`
+- **Claude describer.** Builds the request with photos, reference and measured values, and validates the
+  structured answer into a feature tree. `caliper/vision.py`
+- **Feature tree.** Base plate, fillet, flange, hole, slot, boss. Validation, JSON round trip, snapping.
+  `caliper/features.py`
+- **CadQuery generation and export.** Readable `model.py`, STEP and STL. `caliper/codegen.py`,
+  `caliper/export.py`
+- **Print check.** Minimum wall per feature, webs between holes, overhang per orientation.
+  `caliper/dfm.py`
+- **Preview render.** Offscreen VTK render of the mesh. `caliper/render.py`
+- **Tests.** 57 tests: calibration math, code generation checked against hand-computed volumes, print
+  check, measurement on drawn images, the Claude request shape against a stub client, and the bracket
+  example end to end. `tests/`
+
+Measured on one synthetic part. [`examples/bracket`](examples/bracket) renders three photos of a
+hand-written CadQuery bracket with a pinhole camera, slight tilt, blur, noise and JPEG compression, runs
+the classical describer on them and compares with the true dimensions
+([`accuracy.md`](examples/bracket/accuracy.md)):
+
+| Measure | Result |
+|---|---|
+| Dimensions scored (reference excluded) | 14 |
+| Mean absolute error | 0.09 mm (0.67%) |
+| Worst error | 0.47 mm, flange height 40 read as 40.47 |
+| Exact after snapping to 0.5 mm | 12 of 14 |
+| Real photos tested | 0 |
+| Claude describer tested against the live API | No, only against a stub client |
+
+The model it produced is in [`examples/bracket/out/`](examples/bracket/out), with its render in
+[`preview.png`](examples/bracket/out/preview.png).
+
+Known limits:
+
+- Simple prismatic parts only. No curved surfaces, threads, snap fits, ribs, chamfers, pockets,
+  countersinks or blind holes. At most one flange and one corner fillet.
+- The classical describer needs a top view and clean photos: plain background, even light, square-on.
+  It never detects bosses; a boss can only come from the Claude describer or a hand-edited tree.
+- Snapping can make a value worse: in the example the 40 mm flange became 40.5 and the 5.2 mm flange
+  holes became 5.0. `--snap 0` turns it off.
+- A marker gives the scale of the surface it lies on. The correction to the part's top face is not
+  applied; the EXIF focal length is read but not used.
+- Anything no photo shows is not in the model.
+- The print check is a first pass, not a slicer.
+
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-05-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-05-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-05-dark.svg">
+  <img src=".github/assets/rule-05-light.svg" width="100%" alt="05 Quick start">
+</picture>
+
+Requires Python 3.11 or newer; CadQuery must have a wheel for your Python version. The commands below
+were run on Windows 11 with Python 3.11.18, a virtual environment made with
+[uv](https://docs.astral.sh/uv/), and no API key. The install pulls the OpenCascade kernel and VTK and
+took about 100 seconds. On Windows, keep the environment path short: the CAD kernel's native libraries
+can fail to load from very long paths. Here the environment sat at a short path outside the clone
+instead of `.venv`; the commands were otherwise the same. On macOS or Linux use `.venv/bin/` instead of `.venv/Scripts/`;
+that was not tested.
 
 ```bash
-caliper scan photos/ --ref "hole spacing 40mm" --out part/
+git clone https://github.com/hesselb20-ctrl/caliper.git
+cd caliper
+uv venv --python 3.11 --seed .venv
+.venv/Scripts/python -m pip install -e ".[dev]"
 ```
 
-[![Tutorial preview](media/preview.gif)](media/tutorial.mp4)
-
-The full 75 second walkthrough is [media/tutorial.mp4](media/tutorial.mp4).
-
-## Why
-
-A 3D scan gives you a mesh: a million triangles that look like the part and know nothing about it. You cannot make the hole 0.5 mm bigger, move it, or thicken a wall without fighting the mesh.
-
-What you want back is the *design intent*: a plate that is 80 by 50 by 5, two 6.5 mm holes 40 mm apart, a flange on one edge. That is a short list of features with numbers on them, and it is exactly what a CAD model is. Caliper recovers that list, writes it as readable CadQuery code, and exports the solid.
-
-## How it works
-
-![Photos and a reference go to scale calibration, then a feature tree, then CadQuery, then STEP and STL](media/how-it-works.svg)
-
-1. **Photos + reference.** You shoot the part square-on from the top, the side and the front, and give one measurement you trust: `"hole spacing 40mm"`, `"width 50mm"`, or a printed ArUco marker (`"marker 30mm"`).
-2. **Scale.** The reference fixes millimetres per pixel in the view that shows it. That scale is then chained to the other views through dimensions they share (the plate length is visible from above and from the front), so no view is scaled by guesswork. Only faces square to the camera are measured, which keeps perspective from stretching anything.
-3. **Feature tree.** Claude (`claude-fable-5-2`, vision) describes the part as a tree of features: base plate, holes, slots, fillets, bosses, a flange, each with dimensions. The pixel measurements are handed to Claude as evidence, so it spends its judgement on structure and intent instead of guessing sizes. Without an API key, an offline classical describer builds the tree from the measurements alone.
-4. **CadQuery.** The tree becomes a `model.py` you can read, with every dimension looked up by name in `params.json`.
-5. **STEP + STL.** The solid is exported, checked for printability (minimum wall, overhangs per print orientation) and summarised in `report.md`.
-
-![The example bracket's feature tree next to a dimensioned drawing](media/feature-tree.svg)
-
-## Install
-
-Python 3.11 or newer.
+Run the tests. Expect `57 passed`.
 
 ```bash
-pip install git+https://github.com/hesselb20-ctrl/caliper.git
+.venv/Scripts/python -m pytest -q
 ```
 
-Caliper is not on PyPI yet, so install it from GitHub. CadQuery brings the OpenCascade CAD kernel with it, so expect a large download.
-
-To use the Claude describer, set an API key:
+Scan the example photos. With no API key it uses the classical describer and says so.
 
 ```bash
-export ANTHROPIC_API_KEY=sk-ant-...
-```
-
-On Windows, install into a virtual environment with a short path (for example `C:\venvs\caliper`): the CAD kernel's DLLs fail to load from paths longer than 260 characters.
-
-## Quickstart
-
-Put your photos in a folder. Name them `top`, `side` and `front` so caliper knows which is which.
-
-```bash
-caliper scan photos/ --ref "hole spacing 40mm" --out part/
+.venv/Scripts/caliper scan examples/bracket/photos --ref "hole spacing 40mm" --out part
 ```
 
 ```text
@@ -72,124 +171,88 @@ Feature tree (classical):
 Manufacturability:
   thinnest wall: 5.00 mm (base thickness) - ok
   best print orientation: +z up (as modelled), 39.9 mm2 of unsupported overhang
+  warning: ANTHROPIC_API_KEY not set: used the offline classical describer
 ```
 
-`part/` now holds:
+`part/` then holds `part.step`, `part.stl`, `params.json`, `model.py`, `feature_tree.json`,
+`measured.json`, `calibration.json`, `report.md`, `report.json` and `preview.png`.
 
-| File | What it is |
+Edit a number in `part/params.json` and rebuild. Changing `"flange.height"` from 40.5 to 40 gave
+`flange [flange] height=40` in the rebuilt tree.
+
+```bash
+.venv/Scripts/caliper rebuild part
+```
+
+Write a printable ArUco marker. Print it, measure the black square, and pass `--ref "marker 30mm"`
+with the size you measured.
+
+```bash
+.venv/Scripts/caliper marker --out marker.png
+```
+
+Re-run the accuracy benchmark. It re-renders the photos and rewrites `examples/bracket/out/` and
+`accuracy.md`. The run here gave 0.092 mm mean error, the same within rounding as the committed table.
+
+```bash
+.venv/Scripts/python examples/bracket/run_example.py
+```
+
+Other scan options: `--describer auto|claude|classical`, `--snap 0.5`, `--min-wall 1.2`,
+`--max-overhang 45`, `--no-preview`. The Claude describer (`--describer claude`, or `auto` with
+`ANTHROPIC_API_KEY` set) was not run here.
+
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-06-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-06-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-06-dark.svg">
+  <img src=".github/assets/rule-06-light.svg" width="100%" alt="06 Stack, status, roadmap">
+</picture>
+
+**Stack**
+
+| Layer | Built with |
 |---|---|
-| `part.step` | The solid, for any CAD package |
-| `part.stl` | The mesh, ready for a slicer |
-| `params.json` | Every dimension by name, e.g. `"flange.height": 40.5` |
-| `model.py` | The generated CadQuery source |
-| `feature_tree.json` | The feature tree |
-| `measured.json` | Raw measurements before snapping to round values |
-| `report.md` | Scale per view, measurements, print check |
-| `preview.png` | A render of the result |
+| CLI and pipeline | Python 3.11+, argparse |
+| Measurement | OpenCV (contrib, for ArUco), NumPy, Pillow |
+| Optional describer | Anthropic Python SDK, Claude vision with structured output |
+| CAD kernel and export | CadQuery (OpenCascade) |
+| Preview render | VTK, offscreen |
+| Tests | pytest |
+| Tutorial video | Remotion, ffmpeg |
 
-To change the part, edit a number in `params.json` and rebuild:
+**Status**
 
-```bash
-caliper rebuild part/
-```
-
-Useful options: `--describer claude|classical|auto`, `--snap 0.5` (snap dimensions to a grid in mm, `0` keeps raw measurements), `--min-wall 1.2`, `--max-overhang 45`. `caliper marker --out marker.png` writes a printable ArUco marker.
-
-### Taking photos that work
-
-- Plain background that contrasts with the part. A sheet of paper is fine.
-- Shoot square-on, from arm's length or further, and zoom in instead of moving closer.
-- Keep the light behind you, so the face you are shooting is the brightest surface.
-- `top`: straight down. `side`: end-on, so you see the profile. `front`: looking at the inner face of the flange.
-
-## Accuracy
-
-The repository includes one benchmark, and it is synthetic: [examples/bracket](examples/bracket) renders three photos of a hand-written CadQuery bracket with known dimensions, runs caliper on them, and compares. The camera is a real pinhole at about 400 mm, tilted by about a degree and rolled by a couple, and the frames get blur, noise, vignetting and JPEG compression.
-
-![Estimated versus true dimensions for the example bracket](media/accuracy.png)
-
-| Dimension | True (mm) | Measured (mm) | Error (mm) | Error | After snap (mm) |
-|---|---:|---:|---:|---:|---:|
-| Plate length | 80 | 80.06 | +0.06 | +0.1% | 80 |
-| Plate width | 50 | 50.14 | +0.14 | +0.3% | 50 |
-| Plate thickness | 5 | 5.06 | +0.06 | +1.2% | 5 |
-| Corner radius | 6 | 6.13 | +0.13 | +2.2% | 6 |
-| Base hole diameter | 6.5 | 6.48 | -0.02 | -0.3% | 6.5 |
-| Base hole spacing * | 40 | 40.00 | +0.00 | +0.0% | 40 |
-| Base hole offset | -8 | -7.96 | +0.04 | +0.6% | -8 |
-| Slot length | 14 | 13.95 | -0.05 | -0.3% | 14 |
-| Slot width | 5 | 5.01 | +0.01 | +0.2% | 5 |
-| Slot offset | 8 | 8.06 | +0.06 | +0.8% | 8 |
-| Flange height | 40 | 40.47 | +0.47 | +1.2% | 40.5 |
-| Flange thickness | 5 | 5.06 | +0.06 | +1.2% | 5 |
-| Flange hole diameter | 5.2 | 5.17 | -0.04 | -0.7% | 5 |
-| Flange hole spacing | 44 | 43.95 | -0.04 | -0.1% | 44 |
-| Flange hole height | 26 | 26.10 | +0.10 | +0.4% | 26 |
-
-\* the reference measurement, so not scored.
-
-Over the 14 scored dimensions the mean absolute error is **0.09 mm (0.67%)** and the worst is **0.47 mm** (flange height, 1.2%). The largest relative error is the corner radius at 2.2%.
-
-What these numbers do and do not show:
-
-- **They come from the offline classical describer.** The Claude describer is implemented and its request and response handling are unit tested against a stub, but it was not run against the live API for this benchmark, so there is no measured accuracy for it yet. Run `python examples/bracket/run_example.py --claude` with a key to produce one.
-- **Snapping helps and hurts.** Snapping to a 0.5 mm grid made 12 of the 14 dimensions exact, and made two worse: the flange height became 40.5 (true 40) and the 5.2 mm flange holes became 5.0. `measured.json` always keeps the raw values, and `--snap 0` turns snapping off.
-- **Rendered photos are easier than real ones.** There are no shadows, no lens distortion, no clutter and no glossy highlights. Expect real photos to do worse. There is no real-photo benchmark in the repository yet.
-- **It is one part.** One bracket says little about other shapes.
-
-Reproduce it:
-
-```bash
-python examples/bracket/run_example.py
-```
-
-## Supported part types
-
-Version 1 handles simple prismatic parts built from these features:
-
-| Feature | Parameters |
+| Part | State |
 |---|---|
-| Base plate | length, width, thickness |
-| Corner fillet | radius, on all corners or only the free ones |
-| Flange (one, on any edge) | height, thickness |
-| Through hole | position, diameter; in the base or the flange |
-| Through slot | position, length, width, angle |
-| Round boss | position, diameter, height, optional bore |
+| Classical pipeline | Built. Measured on one rendered bracket. Never run on real photos. |
+| Claude describer | Built. Request and response handling tested against a stub. Never run against the live API in this repository. |
+| CadQuery generation, export, print check | Built and unit tested. |
+| Packaging | Version 0.1.0. Not on PyPI. No CI. |
 
-That covers flat plates, L-brackets, simple mounts, adapter plates and spacers. Knobs and clips are only modelled as far as their prismatic envelope goes.
+**Roadmap.** From the repository's previous README:
 
-## Limitations
+1. A real-photo benchmark with a handful of printed and measured parts.
+2. Measured accuracy for the Claude describer, with and without pixel evidence.
+3. Chamfers, countersinks, pockets, ribs and U-channels.
+4. Lens distortion and full perspective correction from the ArUco marker.
+5. A confidence value per dimension, and a prompt for the one extra photo that would help most.
+6. 3MF export and print-orientation hints for the slicer.
 
-- **Simple prismatic parts only.** No curved or organic surfaces, threads, snap fits, ribs, gussets, chamfers, pockets, countersinks or blind holes.
-- **One flange.** U-channels and boxes are out of scope for now.
-- **The offline describer needs clean photos**: plain background, even light, square-on. It reads holes in the base from the top view and holes in the flange from the front view. Real-world photos are what the Claude describer is for.
-- **Hidden features are invisible.** Anything no photo shows is not in the model. The describer's notes say what was assumed.
-- **ArUco calibration is basic.** The marker gives the scale of the surface it lies on; the correction to the top face of the part is not applied automatically yet.
-- **The print check is a first pass**, not a slicer: wall thicknesses come from the feature tree and overhangs from the mesh, for the six axis-aligned orientations.
-- **Check critical dimensions with real calipers** before you rely on a fit.
+**Documents**
 
-## Roadmap
+| File | Contents |
+|---|---|
+| [`examples/bracket/accuracy.md`](examples/bracket/accuracy.md) | Per-dimension results of the synthetic benchmark |
+| [`examples/bracket/out/report.md`](examples/bracket/out/report.md) | Scan report: scale per view, measured and snapped values, print check |
+| [`tutorial/README.md`](tutorial/README.md) | How the tutorial video is built from the example's output |
+| [`media/tutorial.mp4`](media/tutorial.mp4?raw=true) | 75-second walkthrough video, 4.8 MB download |
 
-- A real-photo benchmark with a handful of printed and measured parts
-- Measured accuracy for the Claude describer, with and without pixel evidence
-- Chamfers, countersinks, pockets, ribs and U-channels
-- Lens distortion and full perspective correction from the ArUco marker
-- A confidence value per dimension, and a prompt for the one extra photo that would help most
-- 3MF export and print-orientation hints for the slicer
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-07-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-07-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-07-dark.svg">
+  <img src=".github/assets/rule-07-light.svg" width="100%" alt="07 License">
+</picture>
 
-## Development
-
-```bash
-git clone https://github.com/hesselb20-ctrl/caliper.git
-cd caliper
-pip install -e ".[dev]"
-pytest
-```
-
-The tests cover the calibration math, feature tree to CadQuery generation (volumes and bounding boxes checked against hand calculations), the manufacturability check, measurement on drawn images, the Claude request shape, and the bracket example end to end.
-
-The README images are made in code by `python scripts/make_media.py`, and the tutorial video is a Remotion project in [tutorial/](tutorial). Both read their colours and type sizes from `media/theme.json`.
-
-## License
-
-MIT. See [LICENSE](LICENSE).
+MIT. See [`LICENSE`](LICENSE).
